@@ -20,24 +20,46 @@ main:
    mov  %rsp, %rbp            # create a new frame  
 
    sub  $16, %rsp             # make some space on the stack (stack alignment)
+   movl  $0, -16(%rbp)         # stack space for current maximum
 
+
+.loop_label:
    # prompt the user
    mov  $prompt_format, %rdi  # first printf argument, format string  
    xor  %rax, %rax            # zero out rax  
-   call printf                # printf
+   call  printf                # printf
+
 
    # read the value
    mov  $read_format, %rdi    # first scanf argument, format string 
    lea  -8(%rbp), %rsi        # second scanf argument, memory address
    xor  %rax, %rax            # zero out rax
-   call scanf                 # scanf
+   call  scanf                # scanf
 
+
+   # check loop condition
+   cmp  $0, -8(%rbp)          # determine parity of current integer
+   jl  .end_label             # exit loop if current value is negative
+
+   
+   # continue, determine current max
+   mov  -8(%rbp), %rsi        # copy current value from stack to register for next instruction
+   cmp  %rsi, -16(%rbp)       # compare current value to current maximum
+   jge  .print_label          # current value is not greater than current max, skip next instruction
+   mov %rsi, -16(%rbp)        # store new current max on stack 
+
+   
+.print_label:
    # print to the screen
    mov  $write_format, %rdi   # first printf argument, format string  
    mov -8(%rbp), %rsi         # second printf argument, the integer  
    xor  %rax, %rax            # zero out rax  
-   call printf                # printf
+   call  printf               # printf
 
+   jmp  .loop_label           # unconditional jump to the beginning of loop 
+
+
+.end_label:
    add  $16, %rsp             # release stack space
    pop  %rbp                  # restore old frame
    ret                        # return to C library to end
@@ -49,9 +71,9 @@ read_format:
    .asciz  "%d"
 
 prompt_format:
-   .asciz  "Enter an integer -> "
+   .asciz  "Enter an integer (negative to quit) -> "
 
 write_format:
-   .asciz  "You entered %d \n"
+   .asciz  "Current maximum is %d \n"
 
 

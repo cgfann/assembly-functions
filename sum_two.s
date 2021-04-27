@@ -40,7 +40,7 @@ main:
    # add integers in function
    mov  -16(%rbp), %rsi       # second sum argument, the second integer
    mov  -8(%rbp), %rdi        # first sum argument, the first integer  
-   call  sum                  # sum of integers
+   call  sum                  # sum of integers, result stored in %rax
 
    # print to screen
    mov  %rax, %rcx            # fourth printf argument, the sum
@@ -67,7 +67,7 @@ write_format:
    .asciz  "%d + %d = %d \n"
 
 sum:
-   lea (%rdi, %rsi), %eax
+   lea  (%rdi, %rsi), %eax
    ret
 
 
