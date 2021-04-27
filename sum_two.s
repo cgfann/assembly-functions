@@ -1,5 +1,5 @@
-# @author Your Name Here {@literal pluf@wfu.edu}
-# @date Apr. 18, 2021
+# @author Charlotte Fanning {@literal fanncg18@wfu.edu}
+# @date May 3, 2021
 # @assignment Lab 8
 # @file sum_two.s
 # @course CSC 250
@@ -25,15 +25,28 @@ main:
    xor  %rax, %rax            # zero out rax  
    call printf                # printf
 
-   # read the value
+   # read first value
    mov  $read_format, %rdi    # first scanf argument, format string 
    lea  -8(%rbp), %rsi        # second scanf argument, memory address
    xor  %rax, %rax            # zero out rax
    call scanf                 # scanf
 
-   # print to the screen
+   # read second value
+   mov  $read_format, %rdi    # first scanf argument, format string 
+   lea  -16(%rbp), %rsi       # second scanf argument, memory address
+   xor  %rax, %rax            # zero out rax
+   call scanf                 # scanf
+
+   # add integers in function
+   mov -16(%rbp), %rsi        # second sum argument, the second integer
+   mov -8(%rbp), %rdi         # first sum argument, the first integer  
+   call sum                   # sum of integers
+
+   # print to screen
+   mov (%rip), %rcx           # fourth printf argument, the sum
+   mov -16(%rbp), %rdx        # third printf argument, the second integer
+   mov -8(%rbp), %rsi         # second printf argument, the first integer
    mov  $write_format, %rdi   # first printf argument, format string  
-   mov -8(%rbp), %rsi         # second printf argument, the integer  
    xor  %rax, %rax            # zero out rax  
    call printf                # printf
 
@@ -48,9 +61,13 @@ read_format:
    .asciz  "%d"
 
 prompt_format:
-   .asciz  "Enter an integer -> "
+   .asciz  "Enter two integers -> "
 
 write_format:
-   .asciz  "You entered %d \n"
+   .asciz  "%d + %d = %d \n"
+
+sum:
+   lea (%rdi, %rsi), %eax
+   ret
 
 
