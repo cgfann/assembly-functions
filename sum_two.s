@@ -15,7 +15,7 @@
 
 
 main:
-   push %rbp                  # save the old frame
+   push  %rbp                  # save the old frame
    mov  %rsp, %rbp            # create a new frame  
 
    sub  $16, %rsp             # make some space on the stack (stack alignment)
@@ -23,32 +23,32 @@ main:
    # prompt the user
    mov  $prompt_format, %rdi  # first printf argument, format string  
    xor  %rax, %rax            # zero out rax  
-   call printf                # printf
+   call  printf                # printf
 
    # read first value
    mov  $read_format, %rdi    # first scanf argument, format string 
    lea  -8(%rbp), %rsi        # second scanf argument, memory address
    xor  %rax, %rax            # zero out rax
-   call scanf                 # scanf
+   call  scanf                 # scanf
 
    # read second value
    mov  $read_format, %rdi    # first scanf argument, format string 
    lea  -16(%rbp), %rsi       # second scanf argument, memory address
    xor  %rax, %rax            # zero out rax
-   call scanf                 # scanf
+   call  scanf                # scanf
 
    # add integers in function
-   mov -16(%rbp), %rsi        # second sum argument, the second integer
-   mov -8(%rbp), %rdi         # first sum argument, the first integer  
-   call sum                   # sum of integers
+   mov  -16(%rbp), %rsi       # second sum argument, the second integer
+   mov  -8(%rbp), %rdi        # first sum argument, the first integer  
+   call  sum                  # sum of integers
 
    # print to screen
-   mov (%rip), %rcx           # fourth printf argument, the sum
-   mov -16(%rbp), %rdx        # third printf argument, the second integer
-   mov -8(%rbp), %rsi         # second printf argument, the first integer
+   mov  %rax, %rcx            # fourth printf argument, the sum
+   mov  -16(%rbp), %rdx       # third printf argument, the second integer
+   mov  -8(%rbp), %rsi        # second printf argument, the first integer
    mov  $write_format, %rdi   # first printf argument, format string  
    xor  %rax, %rax            # zero out rax  
-   call printf                # printf
+   call  printf               # printf
 
    add  $16, %rsp             # release stack space
    pop  %rbp                  # restore old frame
