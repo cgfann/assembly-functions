@@ -45,7 +45,7 @@ main:
    # continue, determine current max
    mov  -8(%rbp), %rdi        # copy current value from stack to register for next instruction
    cmp  %rdi, -16(%rbp)       # compare maximum to current value
-   jge  .print_label           # current value is not greater than current max, skip next instruction
+   jge  .print_label          # current value is not greater than current max, skip next instruction
    mov  %rdi, -16(%rbp)       # store new current max on stack 
    xor  %rax, %rax            # zero out %rax
 

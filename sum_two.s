@@ -29,7 +29,7 @@ main:
    mov  $read_format, %rdi    # first scanf argument, format string 
    lea  -8(%rbp), %rsi        # second scanf argument, memory address
    xor  %rax, %rax            # zero out rax
-   call  scanf                 # scanf
+   call  scanf                # scanf
 
    # read second value
    mov  $read_format, %rdi    # first scanf argument, format string 
